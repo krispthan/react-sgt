@@ -16,6 +16,7 @@ const Table = props => {
                         <th>Course</th>
                         <th>Grade</th>
                         <th>Actions</th>
+                        <th>Teacher</th>
                     </tr>
                 </thead>
                 <tbody>

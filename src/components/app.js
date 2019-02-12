@@ -2,6 +2,7 @@ import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import '../assets/css/app.scss';
 import React, {Component} from 'react';
+import axios from 'axios';
 import Table from './table';
 import studentData from '../data/get_all_students';
 import AddStudent from './add_student';
@@ -35,11 +36,13 @@ addStudent = (student) => {
     });
 }
 getStudentData(){
-    //Call server to get student Data
- 
-    this.setState({
-        students: studentData
+    axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
+      console.log('server response',(response.data.data));
+      this.setState({
+        students: response.data.data
     });
+    });
+   
 }
   render(){
     return (
