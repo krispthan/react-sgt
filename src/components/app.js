@@ -4,9 +4,8 @@ import '../assets/css/app.scss';
 import React, {Component} from 'react';
 import axios from 'axios';
 import Table from './table';
-import studentData from '../data/get_all_students';
 import AddStudent from './add_student';
-import {randomString} from '../helpers';
+import {formatPostData} from '../helpers';
 
 
 class App extends Component {
@@ -17,38 +16,24 @@ class App extends Component {
    this.getStudentData();
   
 }
-deleteStudent = (id) => {
-  const indexToDelete = this.state.students.findIndex((student) =>{
-    return student.id === id;
-  });
-  if(indexToDelete >= 0){
-    const tempStudents = this.state.students.slice();
-    tempStudents.splice(indexToDelete,1);
-    
-    this.setState({
-      students: tempStudents
-    })
-  }
+deleteStudent = async(id) => {
+  const formattedId =formatPostData({id:id});
+  await axios.post("server/deletestudent.php", formattedId);
+  this.getStudentData();
+
 }
-addStudent = (student) => {
-     student.id = randomString(8);
-    this.setState({
-      students: [...this.state.students,student]
-    });
+addStudent = async (student) => {
+  const formattedStudent = formatPostData(student);
+ await axios.post("/server/createstudent.php", formattedStudent);
+ this.getStudentData();
 }
 async getStudentData(){
-  const resp = await axios.get('http://localhost/server/getstudentlist.php');
+  const resp = await axios.get('/server/getstudentlist.php');
   this.setState({
-      students :resp.data.data
-  })
-    // axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
-    //   console.log('server response',(response.data.data));
-    //   this.setState({
-    //     students: response.data.data
-    // });
-    // });
-   console.log('Resp:', resp);
+    students:resp.data.data || []
+  });
 }
+
   render(){
     return (
        <div>

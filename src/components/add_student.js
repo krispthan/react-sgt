@@ -6,10 +6,11 @@ class AddStudent extends Component {
         name:"",
         course:"",
         grade:"",
+        instructor: " ",
+        notes: " "
     }
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Form submitted:', this.state);
         this.props.add(this.state);
         this.resetForm();
     }
@@ -17,34 +18,19 @@ class AddStudent extends Component {
         this.setState({
             name: " ",
             course: " ",
-            grade: " "
+            grade: " ",
+            instructor: " ",
+            notes: " "
         });
     }
     handleKeyPress =(event) =>{
-      
-        // switch(event.target.name){
-        //     case "name":
-        //         this.setState({
-        //             name: event.target.value
-        //         });
-        //         break;
-        //     case "course":
-        //         this.setState({
-        //             course:event.target.value
-        //         });
-        //         break;
-        //     case "grade":
-        //         this.setState({
-        //             grade:event.target.value
-        //         });
-        // }
         
        this.setState({
            [event.target.name] : event.target.value,
        });
     }
     render(){
-        const {name, course, grade} = this.state;
+        const {name, course, grade, instructor, notes} = this.state;
         return (
             <form onSubmit ={this.handleSubmit}>
                <div className="row">
@@ -60,9 +46,16 @@ class AddStudent extends Component {
                     <input onChange={this.handleKeyPress} name="grade" type="number" id="grade" value={grade} autoComplete="off"/> 
                     <label htmlFor="grade">Grade</label>
                 </div>
+                <div className="input-field s10 offset-s1">
+                    <input onChange={this.handleKeyPress} name="instructor" type="text" id="instructor" value={instructor} autoComplete="off"/> 
+                    <label htmlFor="grade">Instructor</label>
+                </div>
+                <div className="input-field s10 offset-s1">
+                    <input onChange={this.handleKeyPress} name="notes" type="text" id="notes" value={notes} autoComplete="off"/> 
+                    <label htmlFor="notes">Notes</label>
+                </div>
             </div>
-
-            <div className="row">
+         <div className="row">
                 <div className="col s6 center">
                     <button onClick = {this.resetForm} type="button" className="btn red darken-2">Clear</button>
                 </div>
