@@ -13,8 +13,9 @@ class App extends Component {
   state = {
     students:[]
 }
-componentDidMount(){
-    this.getStudentData();
+ componentDidMount(){
+   this.getStudentData();
+  
 }
 deleteStudent = (id) => {
   const indexToDelete = this.state.students.findIndex((student) =>{
@@ -35,14 +36,18 @@ addStudent = (student) => {
       students: [...this.state.students,student]
     });
 }
-getStudentData(){
-    axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
-      console.log('server response',(response.data.data));
-      this.setState({
-        students: response.data.data
-    });
-    });
-   
+async getStudentData(){
+  const resp = await axios.get('http://localhost/server/getstudentlist.php');
+  this.setState({
+      students :resp.data.data
+  })
+    // axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
+    //   console.log('server response',(response.data.data));
+    //   this.setState({
+    //     students: response.data.data
+    // });
+    // });
+   console.log('Resp:', resp);
 }
   render(){
     return (
