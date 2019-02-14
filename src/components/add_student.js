@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import { timingSafeEqual } from 'crypto';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+import {formatPostData} from '../helpers';
 
 class AddStudent extends Component {
     state = {
@@ -9,10 +11,12 @@ class AddStudent extends Component {
         instructor: " ",
         notes: " "
     }
-    handleSubmit = (event) => {
+  
+    handleSubmit = async (event) => {
         event.preventDefault();
-        this.props.add(this.state);
-        this.resetForm();
+        const formattedStudent = formatPostData(this.state);
+        await axios.post("/server/createstudent.php", formattedStudent);
+       this.props.history.push('/');
     }
     resetForm = () => {
         this.setState({
@@ -32,7 +36,14 @@ class AddStudent extends Component {
     render(){
         const {name, course, grade, instructor, notes} = this.state;
         return (
-            <form onSubmit ={this.handleSubmit}>
+            <div>
+                    <h1 className ="center">Add Student</h1>
+                    <div className="row">
+                        <div className="col s12 right-align">
+                            <Link className="btn cyan" to="/">Home</Link>
+                        </div>
+                    </div>
+                <form onSubmit ={this.handleSubmit}>
                <div className="row">
                   <div className="input-field s10 offset-s1">
                     <input onChange={this.handleKeyPress} name="name" type="text" id="name" value={name} autoComplete="off"/> 
@@ -64,6 +75,8 @@ class AddStudent extends Component {
        </div>
      </div>
   </form>
+
+ </div>
         );
     }
 }
